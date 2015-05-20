@@ -10,6 +10,9 @@
 #import "SDWebImageDownloaderOperation.h"
 #import <ImageIO/ImageIO.h>
 
+NSString *const SDWebImageDownloadStartNotification = @"SDWebImageDownloadStartNotification";
+NSString *const SDWebImageDownloadStopNotification = @"SDWebImageDownloadStopNotification";
+
 static NSString *const kProgressCallbackKey = @"progress";
 static NSString *const kCompletedCallbackKey = @"completed";
 
@@ -110,7 +113,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
 
 - (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url options:(SDWebImageDownloaderOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageDownloaderCompletedBlock)completedBlock {
     __block SDWebImageDownloaderOperation *operation;
-    __weak __typeof(self)wself = self;
+    __weak SDWebImageDownloader *wself = self;
 
     [self addProgressCallback:progressBlock andCompletedBlock:completedBlock forURL:url createCallback:^{
         NSTimeInterval timeoutInterval = wself.downloadTimeout;
@@ -142,7 +145,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
                                                                  if (callback) callback(receivedSize, expectedSize);
                                                              }
                                                          }
-                                                        completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+                                                        completed:^(UIImage *image, NSData *data, NSString *actualURL, NSError *error, BOOL finished) {
                                                             SDWebImageDownloader *sself = wself;
                                                             if (!sself) return;
                                                             __block NSArray *callbacksForURL;
@@ -154,7 +157,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
                                                             });
                                                             for (NSDictionary *callbacks in callbacksForURL) {
                                                                 SDWebImageDownloaderCompletedBlock callback = callbacks[kCompletedCallbackKey];
-                                                                if (callback) callback(image, data, error, finished);
+                                                                if (callback) callback(image, data, actualURL, error, finished);
                                                             }
                                                         }
                                                         cancelled:^{
@@ -191,7 +194,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
     // The URL will be used as the key to the callbacks dictionary so it cannot be nil. If it is nil immediately call the completed block with no image or data.
     if (url == nil) {
         if (completedBlock != nil) {
-            completedBlock(nil, nil, nil, NO);
+            completedBlock(nil, nil, nil, nil, NO);
         }
         return;
     }
