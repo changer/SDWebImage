@@ -224,7 +224,7 @@
                     }
                     else {
                         if (downloadedImage && finished) {
-                            if(![actualURL containsString:@"thumbnail.png"] || ![actualURL containsString:@"missing.png"])
+                            if(![actualURL containsString:@"thumbnail.png"] && ![actualURL containsString:@"missing.png"])
                                 [self.imageCache storeImage:downloadedImage recalculateFromImage:NO imageData:data forKey:key toDisk:cacheOnDisk];
                         }
 
