@@ -365,6 +365,7 @@
 		DA577D691998E6B2007367ED /* webp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = webp.c; sourceTree = "<group>"; };
 		DA577D6A1998E6B2007367ED /* webpi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = webpi.h; sourceTree = "<group>"; };
 		DAC075D01A08CB9C002E5D32 /* alpha_processing_sse2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alpha_processing_sse2.c; sourceTree = "<group>"; };
+		EBB25A4A1B6FCCF200D2812B /* CacheExcludes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CacheExcludes.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -526,6 +527,7 @@
 				53922D8A148C56230056699D /* SDWebImageDecoder.m */,
 				53922D91148C56230056699D /* SDWebImagePrefetcher.h */,
 				53922D92148C56230056699D /* SDWebImagePrefetcher.m */,
+				EBB25A4A1B6FCCF200D2812B /* CacheExcludes.plist */,
 			);
 			name = Utils;
 			sourceTree = "<group>";

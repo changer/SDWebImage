@@ -23,7 +23,7 @@
 @property (strong, nonatomic, readwrite) SDWebImageDownloader *imageDownloader;
 @property (strong, nonatomic) NSMutableArray *failedURLs;
 @property (strong, nonatomic) NSMutableArray *runningOperations;
-
+@property (strong, nonatomic) NSArray * excludeCacheList;
 @end
 
 @implementation SDWebImageManager
@@ -43,6 +43,8 @@
         _imageDownloader = [SDWebImageDownloader sharedDownloader];
         _failedURLs = [NSMutableArray new];
         _runningOperations = [NSMutableArray new];
+        
+        _excludeCacheList = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"CacheExcluded" ofType:@"plist"]];
     }
     return self;
 }
@@ -226,7 +228,17 @@
                     }
                     else {
                         if (downloadedImage && finished) {
-                            if(![actualURL containsString:@"thumbnail.png"])
+                            __block BOOL shouldExcludeCache = NO;
+                            
+                            [_excludeCacheList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                                if([actualURL containsString:obj])
+                                {
+                                    shouldExcludeCache = YES;
+                                    *stop = YES;
+                                }
+                            }];
+                            
+                            if(shouldExcludeCache == NO)
                                 [self.imageCache storeImage:downloadedImage recalculateFromImage:NO imageData:data forKey:key toDisk:cacheOnDisk];
                         }
 
