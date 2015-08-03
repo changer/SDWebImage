@@ -47,3 +47,5 @@ inline UIImage *SDScaledImageForKey(NSString *key, UIImage *image) {
         return image;
     }
 }
+
+NSString *const SDWebImageErrorDomain = @"SDWebImageErrorDomain";
