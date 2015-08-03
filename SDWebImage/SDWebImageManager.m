@@ -44,7 +44,10 @@
         _failedURLs = [NSMutableArray new];
         _runningOperations = [NSMutableArray new];
         
-        _excludeCacheList = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"CacheExcluded" ofType:@"plist"]];
+        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"SDWebImage" ofType:@"bundle"];
+        
+        NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+        _excludeCacheList = [NSArray arrayWithContentsOfFile:[bundle pathForResource:@"CacheExcludes.plist" ofType:nil]];
     }
     return self;
 }
